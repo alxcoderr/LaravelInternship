@@ -13,7 +13,11 @@ return new class extends Migration
     {
         Schema::create('jobs', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+                            //$table->unsignedBigInteger('employer_id');
+                            $table->ForeignIdFor(\App\Models\Employer::class);
+                            $table->string('title');
+                            $table->string('salary');
+                             $table->timestamps();
         });
     }
 

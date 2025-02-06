@@ -7,7 +7,7 @@ Route::get('/', function () {
 });
 
 Route::get('jobs', function () {
-  $jobs = Job::with('employer')->simplePaginate(3);
+  $jobs = Job::with('employer')->latest()->simplePaginate(3);
     return view('jobs/index', [
         'jobs' => $jobs
     ]);
@@ -24,12 +24,20 @@ Route::get('/jobs/{id}', function ($id) {
     return view('jobs.show', ['job' => $job]);
 });
 
+Route::post('/jobs', function () {
+    request()->validate([
+        'title' => ['required', 'min:3'],
+        'salary' => ['required']
+    ]);
+
+    Job::create([
+        'title' => request('title'),
+        'salary' => request('salary'),
+        'employer_id' => 1
+    ]);
+    return redirect('/jobs');
+});
+
 Route::get('/contact', function () {
     return view('contact');
 });
-
-// Comments
-        // This code here and the one on line  are the same thing.
-        // \Illuminate\Support\Arr::first($jobs, function($jobs))
-        // {
-        //         return $jobs['id']= $id;
